@@ -59,10 +59,31 @@ def child_to_root():
             # Para personas que no tienen ancestros
             G.add_edge('ROOT',node)
 
+
+def revisarAncestros(nodo, tempList):
+    
+    for element in list(G.predecessors(nodo)):
+        tempList.append(element)
+        if(len(list(G.predecessors(element))) > 1):
+            revisarAncestros(element, tempList)
+        else:
             
+            tempList.append(list(G.predecessors(element))[0])
+
+    return tempList
+
+
+def LCA(nodo1, nodo2):
+    todosLosAncestrosNodo1 = []
+    todosLosAncestrosNodo2 = []
+    
+    print(revisarAncestros(nodo1, todosLosAncestrosNodo1))
+    print(revisarAncestros(nodo2, todosLosAncestrosNodo2))
+    
+    
+
+
 def main():
-    
-    
     index_character()
     G.add_node('ROOT', node_size=200,node_color='y')
     print('IS G TREE?',nx.is_tree(G))
@@ -70,6 +91,9 @@ def main():
     child_to_root()
     plt.gcf().set_size_inches(2 * plt.gcf().get_size_inches()) 
     nx.draw_networkx(G, pos = nx.random_layout(G),node_size=50,node_color='r',edge_color='b',font_size=5,with_labels=True, alpha=0.5)
+
+    LCA("Robb Stark", "Jon Snow")
+
     plt.savefig('gotplotgraph.png', dpi=400, bbox_inches='tight')
     plt.show()
 
