@@ -55,7 +55,10 @@ def adder():
 
 def child_to_root():
      for node in G:
-         G.add_edge('ROOT',node)
+         if(len(list(G.predecessors(node))) < 1):
+            # Para personas que no tienen ancestros
+            G.add_edge('ROOT',node)
+
             
 def main():
     
