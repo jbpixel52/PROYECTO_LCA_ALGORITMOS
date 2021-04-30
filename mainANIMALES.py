@@ -1,3 +1,4 @@
+#%%
 import networkx as nx
 import json
 import matplotlib
@@ -25,18 +26,25 @@ class Tree():
 print('#### PROYECTO DE ANALISIS DE ALGORITMOS ####\n')
 ##Tetrapoda_1
 def lowestCommonAncestor(root, node1, node2): 
-    if(not root):
-        return None
-    if (root == node1 or root == node2): 
+    # if(not root):
+    #     return None
+    if (root == node1 or root == node2 or root==None): 
         return root
     left = lowestCommonAncestor(root.left, node1, node2)
     right = lowestCommonAncestor(root.right, node1, node2)
-    if(not left):
-        return right
-    elif(not right):
+    # if(not left):
+    #     return right
+    # elif(not right):
+    #     return left
+    # else:
+    #     return root
+    if left!=None and right!=None:
+        return root
+    print(left,right)
+    if left:
         return left
     else:
-        return root
+        return right
 
 def iterativeChildren(familia, Arbol, Ancestor, NodoReino):
     if("taxon" in familia):
@@ -72,7 +80,6 @@ def iterativeChildren(familia, Arbol, Ancestor, NodoReino):
 
 with open('./CCNBA_Metazoa_3.json') as animales:
     metazoa = json.load(animales)
-    #print(metazoa)
     Arbol = nx.Graph()
     Arbol.add_node("Metazoa_3",size=100, node_color='y')
 
@@ -92,11 +99,6 @@ with open('./CCNBA_Metazoa_3.json') as animales:
             
     nx.draw(Arbol, font_size=6, node_color=color_map, edge_color='g', with_labels=True)
 
-
-    # #nx.lowest_common_ancestor(G,'Cable','Hope Summers')
-    # plt.savefig('plotgraph.png', dpi=400, bbox_inches='tight')
-    # plt.show()
-    print (matplotlib.__version__)
     print(Reino)
     LCAtest = lowestCommonAncestor(Reino.root,Arbol.superNodoA,Arbol.superNodoB)
-    print(LCAtest)
+    print('LCA is:',LCAtest)
