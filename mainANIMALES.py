@@ -3,6 +3,8 @@ import json
 import matplotlib
 import matplotlib.pyplot as plt
 
+
+
 class Node():
     def __init__(self, name, isFamily, left, right, properties):
         self.isFamily = isFamily
@@ -16,12 +18,32 @@ class Tree():
     def __init__(self, root, size):
         self.root = root
         self.size = size
+        self.superNodoA = None ##Gren anole
+        self.superNodoB = None ##sumatran oran
         pass
 
 print('#### PROYECTO DE ANALISIS DE ALGORITMOS ####\n')
+##Tetrapoda_1
+def lowestCommonAncestor(root, node1, node2): 
+    if(not root):
+        return None
+    if (root == node1 or root == node2): 
+        return root
+    left = lowestCommonAncestor(root.left, node1, node2)
+    right = lowestCommonAncestor(root.right, node1, node2)
+    if(not left):
+        return right
+    elif(not right):
+        return left
+    else:
+        return root
 
 def iterativeChildren(familia, Arbol, Ancestor, NodoReino):
     if("taxon" in familia):
+        if(familia["taxon"]=="Sus_scrofa"):
+            Arbol.superNodoA = familia
+        if(familia["taxon"]=="Pongo_abelii"):
+            Arbol.superNodoB = familia        
         Arbol.add_node(familia["taxon"])
         Arbol.add_edge(familia["taxon"],Ancestor, weight=4.70)
         ##Es una especie
@@ -71,8 +93,10 @@ with open('./CCNBA_Metazoa_3.json') as animales:
     nx.draw(Arbol, font_size=6, node_color=color_map, edge_color='g', with_labels=True)
 
 
-    #nx.lowest_common_ancestor(G,'Cable','Hope Summers')
-    plt.savefig('plotgraph.png', dpi=400, bbox_inches='tight')
-    plt.show()
+    # #nx.lowest_common_ancestor(G,'Cable','Hope Summers')
+    # plt.savefig('plotgraph.png', dpi=400, bbox_inches='tight')
+    # plt.show()
     print (matplotlib.__version__)
     print(Reino)
+    LCAtest = lowestCommonAncestor(Reino.root,Arbol.superNodoA,Arbol.superNodoB)
+    print(LCAtest)
